@@ -15,6 +15,7 @@ const getUser = require("./functions/getUser");
 const updateUser = require("./functions/updateUser");
 const createUser = require("./functions/createUser");
 const isValidKey = require("./functions/isValidKey");
+const createNft = require("./functions/createNft");
 
 const mongoConnect = require("./mongoConnect");
 mongoConnect();
@@ -56,19 +57,33 @@ app.post("/incoming", async (req, res) => {
       } else if (state == 1) {
         let collectionName = text.split("/")[0];
         let photoTitle = text.split("/")[1];
-        let collection = await getCollection(collectionName , user.wallet);
 
-        console.log("collection", collection);
+        console.log(collectionName, photoTitle);
 
-        if (collection) {
+        if (!photoTitle || !media || !collectionName) {
           response =
-            "Great , we found your collection , minting your NFT , please wait";
+            "Please enter in format CollectionName/PhotoTitle along with photo";
         } else {
-          response =
-            "We didn't find your collection , creating a new one , please wait";
-          await createCollection(collectionName, media);
-        }
+          let collection = await getCollection(collectionName, user.wallet);
 
+          if (collection) {
+            response =
+              "Great , we found your collection , minting your NFT , please wait";
+            console.log("collectionAddress", collection);
+            let nft = await createNft(collection, photoTitle, media);
+            response = `Great , we minted your NFT \n solscan.io/token/${nft}`;
+          } else {
+            response =
+              "We didn't find your collection , creating a new one , please wait";
+            let collectionAddress = await createCollection(
+              collectionName,
+              media
+            );
+            console.log("collectionAddress", collectionAddress);
+            let nft = await createNft(collectionAddress, photoTitle, media);
+            response = `Great , we created your collection and minted your NFT \n solscan.io/token/${nft}`;
+          }
+        }
       } else {
         response = "Sorry, I didn't understand that.";
       }

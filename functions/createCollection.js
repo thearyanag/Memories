@@ -19,7 +19,7 @@ const createCollection = async (text, media) => {
       }
     });
 
-    console.log(response.data);
+    return response.data["mintAddress"];
   } catch (error) {
     console.error(error);
   }

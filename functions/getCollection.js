@@ -8,10 +8,11 @@ let token = process.env.UNDERDOG_TOKEN
   to get a collection from name and owner address
 */
 const getCollection = async (toSearch, Owner) => {
+  console.log(toSearch, Owner)
   try {
     const response = await axios.get('https://api.underdogprotocol.com/v1/collections', {
       params: {
-        limit: 1,
+        limit: 100,
         page: 1
       },
       headers: {
@@ -27,8 +28,6 @@ const getCollection = async (toSearch, Owner) => {
       if (data["name"] == toSearch && data["ownerAddress"] == Owner)
         return data["mintAddress"]
     }
-
-    return ("not found")
 
   } catch (error) {
     console.error(error);
