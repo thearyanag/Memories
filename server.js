@@ -45,11 +45,11 @@ app.post("/incoming", async (req, res) => {
       console.log("state", state);
 
       if (state == 0) {
-        let valid = await isValidKey(text);
-        if (valid) {
+        let pubKey = await isValidKey(text);
+        if (pubKey) {
           response =
             "Great , you are all set up , now you can send any photo with caption as CollectionName/PhotoTitle and we'll mint it for you";
-          updateUser(phone, { state: 1, wallet: text });
+          updateUser(phone, { state: 1, wallet: pubKey });
         } else {
           response = "Please first enter a valid Solana address";
         }

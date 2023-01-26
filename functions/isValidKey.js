@@ -1,12 +1,18 @@
 const { PublicKey } = require("@solana/web3.js");
+const getWallet = require("./getWallet");
 
-module.exports = async function isValidKey(key) {
+async function isValidKey(key) {
   try {
+    if(key.endsWith(".sol")) {
+      return await getWallet(key);
+    }
     let pubKey = new PublicKey(key);
+    pubKeyString = pubKey.toString();
     pubKey = pubKey.toBytes();
-    return PublicKey.isOnCurve(pubKey);
+    if(PublicKey.isOnCurve(pubKey)) return pubKeyString;
   } catch (error) {
     return false;
   }
 };
 
+module.exports = isValidKey;
