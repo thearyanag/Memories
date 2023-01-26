@@ -69,7 +69,7 @@ app.post("/incoming", async (req, res) => {
             response =
               "Great , we found your collection , minting your NFT , please wait";
             console.log("collectionAddress", collection);
-            let nft = await createNft(collection, photoTitle, media);
+            let nft = await createNft(collection, photoTitle, media , user.wallet);
             response = `Great , we minted your NFT \n solscan.io/token/${nft}`;
           } else {
             response =
@@ -79,7 +79,7 @@ app.post("/incoming", async (req, res) => {
               media
             );
             console.log("collectionAddress", collectionAddress);
-            let nft = await createNft(collectionAddress, photoTitle, media);
+            let nft = await createNft(collectionAddress, photoTitle, media , user.wallet);
             response = `Great , we created your collection and minted your NFT \n solscan.io/token/${nft}`;
           }
         }
