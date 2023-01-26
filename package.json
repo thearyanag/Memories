@@ -17,6 +17,7 @@
     "mongodb": "^4.13.0",
     "mongoose": "^6.9.0",
     "requests": "^0.3.0",
+    "tweetnacl": "^1.0.3",
     "twilio": "^3.84.1"
   }
 }
